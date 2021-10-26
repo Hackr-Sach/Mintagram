@@ -2,6 +2,7 @@ import { Button } from '@chakra-ui/react';
 import { Container, Heading } from '@chakra-ui/layout';
 import { useMoralis } from 'react-moralis';
 import { Auth } from './Auth';
+import { UploadMint } from './UploadMint';
 
 function App() {
   const { isAuthenticated, logout } = useMoralis();
@@ -11,6 +12,7 @@ function App() {
       <Container>
         <Heading>Moraligram</Heading>
         <Button onClick={() => logout()}>Logout</Button>
+        <UploadMint />
       </Container>
     );
   }

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { MoralisProvider } from "react-moralis";
 import App from "./App";
 import Moralis from "moralis";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 const appId = process.env.REACT_APP_MORALIS_APP_ID!;
 const serverUrl = process.env.REACT_APP_MORALIS_SERVER_URL!;
