@@ -1,49 +1,24 @@
-import {
-  Badge,
-  Box,
-  Container,
-  Heading,
-  Wrap,
-  Center,
-  Spinner,
-  WrapItem,
-} from "@chakra-ui/react";
-import { Link, Redirect, Route, Switch, useLocation } from "react-router-dom";
-import React from "react";
-import { useMoralis } from "react-moralis";
+import { Button } from '@chakra-ui/react';
+import { Container, Heading } from '@chakra-ui/layout';
+import { useMoralis } from 'react-moralis';
+import { Auth } from './Auth';
 
 function App() {
-  const location = useLocation();
-  const { isInitializing, isInitialized } = useMoralis();
+  const { isAuthenticated, logout } = useMoralis();
 
-  if (isInitializing) {
+  if (isAuthenticated) {
     return (
-      <Container my={8} pt={8} maxW="container.lg">
-        <Center>
-          <Spinner
-            thickness="4px"
-            emptyColor="whiteAlpha.400"
-            color="blue.400"
-            speed="0.65s"
-            size="xl"
-          />
-        </Center>
+      <Container>
+        <Heading>Moraligram</Heading>
+        <Button onClick={() => logout()}>Logout</Button>
       </Container>
     );
   }
 
-  if (!isInitialized) {
-    <Container my={8} maxW="container.lg">
-      <Heading as="h1" size="4xl">
-        Failed to initialize
-      </Heading>
-    </Container>;
-  }
   return (
-    <Container my={8} maxW="container.lg">
-      <Heading as="h1" size="4xl">
-        react-moralis
-      </Heading>
+    <Container>
+      <Heading mb={6}>Welcome - Log in or sign up</Heading>
+      <Auth />
     </Container>
   );
 }
