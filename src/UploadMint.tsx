@@ -4,43 +4,60 @@ import { Box, Button, Input } from "@chakra-ui/react";
 import { useMoralisFile } from "react-moralis";
 import axios from "axios";
 
-
-/*
-  todo: call mintImage with tokenURI aka ipfs url?
-*/
+// {todo} add multiple file support. for now single is fine.
 
 export const UploadMint = () => {
   const [localFile, setLocalFile] = useState<File|null>(null);
   const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
 
   const handleUpload = () => {
+    let ipfsArray: any[] | undefined = [];
     if (localFile) {
-      saveFile("upload.png", localFile, { saveIPFS: true });
-    }
-  }
+      saveFile(localFile.name, localFile, { saveIPFS: true });
+        ipfsArray.push({
+          path: `images/${localFile.name}`,
+          content: localFile.arrayBuffer  // not correct images are loading corrupt
+        })}
+  
+    axios.post("https://deep-index.moralis.io/api/v2/ipfs/uploadFolder", 
+    ipfsArray,
+      {
+        headers: {
+          "X-API-KEY": 'pv0p5n9Kr0tsWlGizTZWTfGiU1ubIRYTi96kZJIOM7iXy4Lhi00mnkqvWQWxYhBh',
+          "Content-Type": "application/json",
+          "accept": "application/json"
+        }
+      }
+    ).then( (res) => {
+    console.log(res.data);
+    })
+    .catch ( (error) => {
+    console.log(error)
+    })
+}
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.currentTarget.files) 
+    if (event.currentTarget.files) {
       setLocalFile(event.currentTarget.files[0]);
       
       let ipfsArray: any[] | undefined = [];
     
-      for(let i = 0; i < 6; i++){
+      //for(let i = 0; i < 6; i++){
         //let paddedHex = ("0000000000000000000000000000000000000000000000000000000000000000" + i.toString(16).substr(-64));
         ipfsArray.push({
-          path: `metadata/${i}.json`,
+          path: `metadata/${event.currentTarget.files[0].name}.json`,
           content: {
-            image: `ipfs://Qmek3VSvD3NTeGvfA1HAo4H4xgknvJn3zPzrkQQmrpKsww/images/${i}`,
-            name: `test - ${i}`,
+            image: `ipfs://QmfU7GJmNnULJ2YRfGyECAT1jWHnXWW1oeszLgV3Ls7Shy/images/${event.currentTarget.files[0].name}`,
+            name: `test - ${event.currentTarget.files[0].name}`,
             description: "testing testing 123 come test your meta data woth me",
           }
         })
-      } 
+      //} 
         axios.post("https://deep-index.moralis.io/api/v2/ipfs/uploadFolder", 
             ipfsArray,
             {
                 headers: {
-                    "X-API-KEY": '',
+                    "X-API-KEY": 'pv0p5n9Kr0tsWlGizTZWTfGiU1ubIRYTi96kZJIOM7iXy4Lhi00mnkqvWQWxYhBh',
                     "Content-Type": "application/json",
                     "accept": "application/json"
                 }
@@ -51,6 +68,8 @@ export const UploadMint = () => {
         .catch ( (error) => {
             console.log(error)
         })
+    }
+      
   }
 
   return (
@@ -78,3 +97,5 @@ export const UploadMint = () => {
     
   )
 };
+
+
