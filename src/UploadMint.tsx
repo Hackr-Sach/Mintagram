@@ -33,7 +33,7 @@ export const UploadMint = () => {
     })
     .catch ( (error) => {
     console.log(error)
-    })
+    })  
 }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
