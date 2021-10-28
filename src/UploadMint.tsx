@@ -9,14 +9,14 @@ import axios from "axios";
 export const UploadMint = () => {
   const [localFile, setLocalFile] = useState<File|null>(null);
   const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
-
+  
   const handleUpload = () => {
     let ipfsArray: any[] | undefined = [];
     if (localFile) {
       saveFile(localFile.name, localFile, { saveIPFS: true });
         ipfsArray.push({
           path: `images/${localFile.name}`,
-          content: localFile.arrayBuffer  // not correct images are loading corrupt
+          content: localFile.webkitRelativePath  // not correct images are loading corrupt
         })}
   
     axios.post("https://deep-index.moralis.io/api/v2/ipfs/uploadFolder", 

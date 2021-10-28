@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useMoralis } from 'react-moralis';
+import { useMoralis, } from 'react-moralis';
+
 import {
   Button,
   Stack,
@@ -14,9 +15,21 @@ import {
 } from '@chakra-ui/react';
 
 export const Auth = () => {
-  const { authenticate, isAuthenticating, authError, signup, login } = useMoralis();
+  const { Moralis, authenticate, isAuthenticating, authError, signup, login } = useMoralis();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  
+  try {
+    (async function() {
+      (Moralis as any).initPlugins();
+    })();
+  } catch (error) {
+    console.log(error);
+  }
+  
+  function buyCrypto(){
+    (Moralis as any).Plugins.fiat.buy();
+  }
 
   return (
     <Stack spacing={6}>
@@ -62,6 +75,7 @@ export const Auth = () => {
       />
       <Button onClick={() => login(email, password)}>Login</Button>
     </Stack>
+    <Button onClick={() => buyCrypto()}>Buy crypto</Button>
     </Stack>
   );
 };
