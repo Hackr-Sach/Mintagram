@@ -5,11 +5,12 @@ import { useMoralis, useMoralisFile } from "react-moralis";
 import axios from "axios";
 
 
-// {todo} add multiple file support. for now single is fine.
-// fix data race on moralisFile uploads
-// resolve and confirm consitent in image urls (seems like ipfs() call is returning random images?)
-// move headers api-key into .env
-// user meta data inputs
+// add multiple file support. for now single is fine.
+// fix data race File uploads [] 
+// resolve and confirm consitent image urls [X]
+// move headers api-key into .env [x]
+// user meta data inputs:Description []
+// resolve mintImage contract call
 
 export const UploadMint = () => {
   const [localFile, setLocalFile] = useState<File|null>(null);
@@ -18,52 +19,47 @@ export const UploadMint = () => {
   
   //handling image & metadata IPFS start
   const handleImgMeta = async (event: React.ChangeEvent<HTMLInputElement>) => {  
-    let ipfsArray;
-    try{
-      if (event.currentTarget.files && localFile) {
+    let ipfsArray:any = [];
+      if (event.currentTarget.files) {
         setLocalFile(event.currentTarget.files[0]);
-        if (event.currentTarget.files[0]) {  
+        if (event.currentTarget.files[0] != null) { 
+          //console.log()
+          let fileName = event.currentTarget.files[0]
+            .name.replace(".png", '').replace(".jpeg", '').replace(".jpg", '')
+
           await saveFile(event.currentTarget.files[0].name, event.currentTarget.files[0], { saveIPFS: true })
-            .then( (res) => {
-              console.log(res?._url)
-              ipfsArray.push({
-                path: `metadata/${localFile.name}.json`,
-                content: {
-                  image: `${moralisFile == null ? "No image to show" : res?._url}`,
-                  name: `${localFile.name}`,
-                  description: "testing testing 123 ",
-                }
-              })
+          .then((res) => {
+            if(res != undefined)
+        
+            ipfsArray.push({
+              path: `metadata/${fileName}.json`,
+              content: {
+                image: `${moralisFile == null ? "No image to show" : res?._url}`,
+                name: `${fileName}`,
+                description: "testing testing 123 ",
+              }
             })
-            .catch( (error) => {
+          })
+          .then(() => {
+            axios.post("https://deep-index.moralis.io/api/v2/ipfs/uploadFolder", 
+            ipfsArray,
+              {
+                headers: {
+                "X-API-KEY": 'Moralis_API_KEY',
+                "Content-Type": "application/json",
+                "accept": "application/json"
+                } 
+              }).then( (res) => {
+                console.log(res.data);
+              }).catch ( (error) => {
                 console.log(error)
-            }); 
-            
+              }) 
+          })
+          .catch( (error) => {
+            console.log(error)
+          }) 
         }
       }
-    } catch(e) {
-      console.log(e)
-    }
-    try{
-      axios.post("https://deep-index.moralis.io/api/v2/ipfs/uploadFolder", 
-      ipfsArray,
-        {
-          headers: {
-          "X-API-KEY": 'pv0p5n9Kr0tsWlGizTZWTfGiU1ubIRYTi96kZJIOM7iXy4Lhi00mnkqvWQWxYhBh',
-          "Content-Type": "application/json",
-          "accept": "application/json"
-          } 
-        } 
-      ).then( (res) => {
-        console.log(res.data);
-      })
-      .catch ( (error) => {
-        console.log(error)
-      })
-    } catch(e) {
-      console.log(e)
-    }
-      
   }
   //handling image & metadata IPFS end
   // handling mint start
@@ -95,12 +91,7 @@ export const UploadMint = () => {
     abi: ABI,
   }
   const handleMint = async () => {
-    
-    try {
-      Moralis.Web3API.native.runContractFunction(opts);
-    } catch (error) {
-      console.log(error)
-    }
+    await Moralis.Web3API.native.runContractFunction(opts);
   }
   // handling mint end
 
