@@ -19,14 +19,6 @@ export const Auth = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   
-  try {
-    (async function() {
-      (Moralis as any).initPlugins();
-    })();
-  } catch (error) {
-    console.log(error);
-  }
-  
   function buyCrypto(){
     (Moralis as any).Plugins.fiat.buy();
   }

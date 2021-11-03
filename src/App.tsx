@@ -10,7 +10,7 @@ function App() {
   if (isAuthenticated) {
     return (
       <Container>
-        <Heading>Moraligram</Heading>
+        <Heading>Mint-a-Gram</Heading>
         <Button onClick={() => logout()}>Logout</Button>
         <UploadMint />
       </Container>

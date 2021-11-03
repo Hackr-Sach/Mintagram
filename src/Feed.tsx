@@ -8,3 +8,19 @@
 
     this is the only filtering functionality we will have until the 2nd iteration
 */
+import React, { useState } from "react";
+import { Heading, Stack } from "@chakra-ui/layout";
+import { Box, Button, Input } from "@chakra-ui/react";
+import { useMoralisFile } from "react-moralis";
+
+export const Feed = () => {
+
+    return(
+        <div>
+            <Stack spacing={6}>
+                <Heading>Feed</Heading>
+            </Stack>
+        </div>
+    
+    );
+}

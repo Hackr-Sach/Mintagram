@@ -8,14 +8,16 @@ contract UserImage is ERC1155 {
   using SafeMath for uint256;
 
   uint256 public tokenCounter;
-  constructor () public ERC1155 ("ipfs://QmfU7GJmNnULJ2YRfGyECAT1jWHnXWW1oeszLgV3Ls7Shy/images/{id}.json"){   
+  constructor () public ERC1155 ("https://ipfs.moralis.io:2053/ipfs/QmYLDRbA4c7VZNJasGwD9U5NNaKgeqPHZ3fKu6Va4xfHmG"){   
     tokenCounter = 0;
+    //_mint(msg.sender, 0, 1, ""); // testing mint.
   }
-  function mintImage(string memory tokenURI) public returns (uint256) {
+  function mintImage(string memory tokenURI) public payable returns (uint256) {
     uint256 newItemId = tokenCounter;
     _mint(msg.sender, newItemId, 1, "");
     _setURI(tokenURI);
     tokenCounter = tokenCounter + 1;
     return newItemId;
   }
+
 }
