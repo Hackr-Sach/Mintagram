@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { useMoralis, } from 'react-moralis';
 
 import {
@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 
 export const Auth = () => {
-  const { Moralis, authenticate, isAuthenticating, authError, signup, login } = useMoralis();
+  const {Moralis , enableWeb3, authenticate, isAuthenticated, isAuthenticating, authError, signup, login } = useMoralis();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   
@@ -23,6 +23,8 @@ export const Auth = () => {
     (Moralis as any).Plugins.fiat.buy();
   }
 
+  useEffect( () =>{if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
+  
   return (
     <Stack spacing={6}>
       // --------wallet auth--------------

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMoralis, useMoralisFile } from "react-moralis";
 import axios from "axios";
 import { Divider, Heading, Stack } from "@chakra-ui/layout";
@@ -12,9 +12,12 @@ import { CallMint } from "./hooks";
 // resolve mintImage contract interaction [in progress]
 
 export const UploadMint = () => {
+
   const [localFile, setLocalFile] = useState<File|null>(null);
+  const [tempURI, setTempURI] = useState<string>('')
   const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
-  const {handleMint, mintState} = CallMint("0x388D7BDc923BAd5792fF3B0F477AA59E0d53406E")
+  const { enableWeb3, authenticate, isAuthenticated, isAuthenticating, authError} = useMoralis();
+  const {handleMint, mintState} = CallMint("0xcE44993276A615a9b5E8DCcec0159135045b0C4A")
 
   //handling image & metadata IPFS start
   const handleImgMeta = async (event: React.ChangeEvent<HTMLInputElement>) => {  
@@ -22,7 +25,6 @@ export const UploadMint = () => {
       if (event.currentTarget.files) {
         setLocalFile(event.currentTarget.files[0]);
         if (event.currentTarget.files[0] != null) { 
-          //console.log()
           let fileName = event.currentTarget.files[0]
             .name.replace(".png", '').replace(".jpeg", '').replace(".jpg", '')
 
@@ -50,6 +52,8 @@ export const UploadMint = () => {
               "accept": "application/json"
               } 
             }).then( (res) => {
+              let path:any = res.data[0].path // Im trying to grab this value and use it in my hook CallMint
+              setTempURI(path) // atm im setting it to a state variable?? is this a viable approach??
               console.log(res.data);
             }).catch ( (error) => {
               console.log(error)
@@ -59,11 +63,8 @@ export const UploadMint = () => {
         }
       }
   }
-  //handling image & metadata IPFS end
-  // handling mint start
-  
-  // handling mint end
 
+  useEffect( () =>{if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
   return (
     <div>
       <Stack spacing={6}>

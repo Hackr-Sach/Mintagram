@@ -1,4 +1,4 @@
-from brownie import accounts, config, UserImage, network
+from brownie import accounts, config, Mint_A_Gram, network
 
 def get_account():
     if network.show_active() == "development":
@@ -8,10 +8,7 @@ def get_account():
 
 def deploy():
     account = get_account()
-    user_image = UserImage.deploy({"from": account})
-    #original = user_image.mintImage("https://ipfs.moralis.io:2053/ipfs/QmUY2q3wkeJqVem5q4HSWvGB2snYUeL6z6Pku9Mjzq9X2u/metadata/1.png.json")
-    print("[[TEST]] " + str(user_image))
-  
+    Mint_A_Gram.deploy({"from": account})
 
 def main():
     deploy()

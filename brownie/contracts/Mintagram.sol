@@ -3,21 +3,27 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract UserImage is ERC1155 {
+contract Mint_A_Gram is ERC1155 {
+
   using SafeMath for uint256;
+  using Counters for Counters.Counter;
 
-  uint256 public tokenCounter;
-  constructor () public ERC1155 ("https://ipfs.moralis.io:2053/ipfs/QmYLDRbA4c7VZNJasGwD9U5NNaKgeqPHZ3fKu6Va4xfHmG"){   
-    tokenCounter = 0;
-    //_mint(msg.sender, 0, 1, ""); // testing mint.
+  Counters.Counter private _tokenIds;
+  string internal _tokenURI;
+  uint256 public _lottoFee;
+
+  constructor() public ERC1155() {
+    //_mint(msg.sender, 1, 1, ""); // test mint
   }
-  function mintImage(string memory tokenURI) public payable returns (uint256) {
-    uint256 newItemId = tokenCounter;
-    _mint(msg.sender, newItemId, 1, "");
+
+  function mintImage(address user, string memory tokenURI) public payable returns (uint256){
+    _tokenIds.increment(); 
+    uint256 newItemId = _tokenIds.current();
+    _mint(user, newItemId, 1, "");
     _setURI(tokenURI);
-    tokenCounter = tokenCounter + 1;
-    return newItemId;
+  return newItemId;
   }
 
 }
