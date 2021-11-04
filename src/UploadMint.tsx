@@ -3,7 +3,8 @@ import { useMoralis, useMoralisFile } from "react-moralis";
 import axios from "axios";
 import { Divider, Heading, Stack } from "@chakra-ui/layout";
 import { Box, Button, Input } from "@chakra-ui/react";
-import { CallMint } from "./hooks";
+import { useCallMint } from "./hooks";
+
 // add multiple file support. for now single is fine.
 // fix data race File uploads [] 
 // resolve and confirm consitent image urls [X]
@@ -13,26 +14,23 @@ import { CallMint } from "./hooks";
 
 export const UploadMint = () => {
 
-  const [localFile, setLocalFile] = useState<File|null>(null);
-  const [tempURI, setTempURI] = useState<string>('')
+  const [tempURI, setTempURI] = useState<any>({path: ''});
   const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
   const { enableWeb3, authenticate, isAuthenticated, isAuthenticating, authError} = useMoralis();
-  const {handleMint, mintState} = CallMint("0xcE44993276A615a9b5E8DCcec0159135045b0C4A")
+  const {handleMint, mintState} = useCallMint("0xcE44993276A615a9b5E8DCcec0159135045b0C4A", tempURI.path)
 
   //handling image & metadata IPFS start
   const handleImgMeta = async (event: React.ChangeEvent<HTMLInputElement>) => {  
     let ipfsArray:any = [];
-      if (event.currentTarget.files) {
-        setLocalFile(event.currentTarget.files[0]);
-        if (event.currentTarget.files[0] != null) { 
-          let fileName = event.currentTarget.files[0]
-            .name.replace(".png", '').replace(".jpeg", '').replace(".jpg", '')
+    if (event.currentTarget.files && event.currentTarget.files[0] != null) {
+      let fileName = event.currentTarget.files[0]
+       .name.replace(".png", '').replace(".jpeg", '').replace(".jpg", '')
 
-          await saveFile(event.currentTarget.files[0].name, event.currentTarget.files[0], { saveIPFS: true })
-          .then((res) => {
-            if(res != undefined)
-            ipfsArray.push({
-              path: `metadata/${fileName}.json`,
+      await saveFile(event.currentTarget.files[0].name, event.currentTarget.files[0], { saveIPFS: true })
+        .then((res) => {
+          if(res != undefined)
+          ipfsArray.push({
+            path: `metadata/${fileName}.json`,
               content: {
                 image: `${moralisFile == null ? "No image to show" : res?._url}`,
                 name: `${fileName}`,
@@ -52,19 +50,18 @@ export const UploadMint = () => {
               "accept": "application/json"
               } 
             }).then( (res) => {
-              let path:any = res.data[0].path // Im trying to grab this value and use it in my hook CallMint
-              setTempURI(path) // atm im setting it to a state variable?? is this a viable approach??
-              console.log(res.data);
+              let _path = res.data[0].path 
+              setTempURI({path: _path}) 
+              console.log(res.data)
+              console.log(tempURI.path)
+              
             }).catch ( (error) => {
               console.log(error)
-            }) 
-          
-          
-        }
+            })   
       }
   }
 
-  useEffect( () =>{if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
+  useEffect( () => {if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
   return (
     <div>
       <Stack spacing={6}>
@@ -79,5 +76,7 @@ export const UploadMint = () => {
     
   )
 };
+
+
 
 

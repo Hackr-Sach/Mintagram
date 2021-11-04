@@ -1,1 +1,1 @@
-export {CallMint} from "./CallMint"
+export {useCallMint} from "./CallMint"

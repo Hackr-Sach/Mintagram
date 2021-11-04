@@ -14,14 +14,14 @@ contract Mint_A_Gram is ERC1155 {
   string internal _tokenURI;
   uint256 public _lottoFee;
 
-  constructor() public ERC1155() {
+  constructor() public ERC1155(_tokenURI) {
     //_mint(msg.sender, 1, 1, ""); // test mint
   }
 
-  function mintImage(address user, string memory tokenURI) public payable returns (uint256){
+  function mintImage(string memory tokenURI) public payable returns (uint256){
     _tokenIds.increment(); 
     uint256 newItemId = _tokenIds.current();
-    _mint(user, newItemId, 1, "");
+    _mint(msg.sender, newItemId, 1, "");
     _setURI(tokenURI);
   return newItemId;
   }
