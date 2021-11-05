@@ -13,11 +13,13 @@ import { useCallMint } from "./hooks";
 // resolve mintImage contract interaction [in progress]
 
 export const UploadMint = () => {
-
+  let contractAddr:any = "0xD6A9c9D318B24fB65a9CF977bdb874506D532743";
+  let testTURI:any = "https://ipfs.moralis.io:2053/ipfs/Qmf7mLDeaUABSDA6wcJpwXSZQuDuUJURtwyAU4h6Dnxcr5/metadata/broc.json";
   const [tempURI, setTempURI] = useState<any>({path: ''});
   const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
   const { enableWeb3, authenticate, isAuthenticated, isAuthenticating, authError} = useMoralis();
-  const {handleMint, mintState} = useCallMint("0xcE44993276A615a9b5E8DCcec0159135045b0C4A", tempURI.path)
+
+  const {handleMint, mintState} = useCallMint(contractAddr, tempURI)
 
   //handling image & metadata IPFS start
   const handleImgMeta = async (event: React.ChangeEvent<HTMLInputElement>) => {  
@@ -50,8 +52,8 @@ export const UploadMint = () => {
               "accept": "application/json"
               } 
             }).then( (res) => {
-              let _path = res.data[0].path 
-              setTempURI({path: _path}) 
+              if(res.data[0].path)
+              setTempURI({path: res.data[0].path as any}) 
               console.log(res.data)
               console.log(tempURI.path)
               

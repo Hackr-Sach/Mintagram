@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract Mint_A_Gram is ERC1155 {
@@ -11,8 +12,8 @@ contract Mint_A_Gram is ERC1155 {
   using Counters for Counters.Counter;
 
   Counters.Counter private _tokenIds;
-  string internal _tokenURI;
-  uint256 public _lottoFee;
+  string public _tokenURI;
+  // uint256 public _lottoFee;
 
   constructor() public ERC1155(_tokenURI) {
     //_mint(msg.sender, 1, 1, ""); // test mint
@@ -22,7 +23,7 @@ contract Mint_A_Gram is ERC1155 {
     _tokenIds.increment(); 
     uint256 newItemId = _tokenIds.current();
     _mint(msg.sender, newItemId, 1, "");
-    _setURI(tokenURI);
+    _tokenURI = tokenURI;
   return newItemId;
   }
 
