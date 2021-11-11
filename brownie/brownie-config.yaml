@@ -1,19 +1,31 @@
 dependencies:
-  - smartcontractkit/chainlink-brownie-contracts@1.1.1
-  - OpenZeppelin/openzeppelin-contracts@4.3.2
+  - OpenZeppelin/openzeppelin-contracts-upgradeable@4.3.1
+  - OpenZeppelin/openzeppelin-contracts@4.3.0
+  - smartcontractkit/chainlink-brownie-contracts@0.2.2
 compiler:
   solc:
     remappings:
-      - '@chainlink=smartcontractkit/chainlink-brownie-contracts@1.1.1'
-      - '@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.3.2'
+      - '@openzeppelin-upgradeable=OpenZeppelin/openzeppelin-contracts-upgradeable@4.3.1'
+      - '@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.3.0'
+      - '@chainlink=smartcontractkit/chainlink-brownie-contracts@0.2.2'
+
+reports:
+    exclude_contracts:
+        - SafeMath
+        - Owned
+
+dev_deployment_artifacts: True
+
+autofetch_sources: True
+
 networks:
   default: development
   local-gan:
-    keyhash: '0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311'
+    keyhash: '0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4'
     fee: 100000000000000000
     verify: False
   development:
-    keyhash: '0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311'
+    keyhash: '0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4'
     fee: 100000000000000000
   rinkeby:
     vrf_coordinator: '0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B'
@@ -22,6 +34,12 @@ networks:
     keyhash: '0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311'
     fee: 100000000000000000
     verify: False
+  kovan:
+    vrf_coordinator: '0xdD3782915140c8f3b190B5D67eAc6dc5760C46E9'
+    link_token: '0xa36085F69e2889c224210F603D836748e7dC0088'
+    keyhash: '0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4'
+    fee: 100000000000000000
+    eth_usd_price_feed: '0x9326BFA02ADD2366b30bacB125260Af641031331'
   mainnet-fork:
     eth_usd_price_feed: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419'
 wallets:

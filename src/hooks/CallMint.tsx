@@ -22,7 +22,7 @@ export const useCallMint = (contractAddress: string, tokenURI: string) => {
 
     const mintImage = await (Moralis as any).executeFunction(opts)
     .then( (res: { data: any; }) => {
-      console.log("res data ->  ", res.data)
+      console.log("Minting!!!")
     }).catch((error: any) => {
       console.log("error ->  ", error)
     });

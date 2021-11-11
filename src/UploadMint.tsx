@@ -15,12 +15,10 @@ import { useCallMint } from "./hooks";
 export const UploadMint = () => {
   let contractAddr:any = "0xD6A9c9D318B24fB65a9CF977bdb874506D532743";
   let testTURI:any = "https://ipfs.moralis.io:2053/ipfs/Qmf7mLDeaUABSDA6wcJpwXSZQuDuUJURtwyAU4h6Dnxcr5/metadata/broc.json";
-  const [tempURI, setTempURI] = useState<any>({path: ''});
   const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
   const { enableWeb3, authenticate, isAuthenticated, isAuthenticating, authError} = useMoralis();
-
+  const [tempURI, setTempURI] = useState<any>({path: ''});
   const {handleMint, mintState} = useCallMint(contractAddr, tempURI)
-
   //handling image & metadata IPFS start
   const handleImgMeta = async (event: React.ChangeEvent<HTMLInputElement>) => {  
     let ipfsArray:any = [];
