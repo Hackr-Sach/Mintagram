@@ -1,20 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { MoralisProvider } from "react-moralis";
+import { MoralisProvider, useMoralis } from "react-moralis";
 import App from "./App";
-import Moralis from "moralis";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Home } from "./HomeFeed";
 
 const appId = process.env.REACT_APP_MORALIS_APP_ID!;
 const serverUrl = process.env.REACT_APP_MORALIS_SERVER_URL!;
-
-console.log("Moralis", Moralis.Web3)
 
 ReactDOM.render(
   <React.StrictMode>
     <MoralisProvider appId={appId} serverUrl={serverUrl}>
       <BrowserRouter>
-          <App />
+          <Switch>
+            <Route exact path="/Home" component={App} />
+            <Route exact path="/Mint-Images" component={Home} />
+            <Route exact path="/Favorites" component={Home} />
+            <Route exact path="/Auctions" component={Home} />
+            <Route exact path="/Profile" component={Home} />
+          </Switch>
       </BrowserRouter>
     </MoralisProvider>
   </React.StrictMode>,

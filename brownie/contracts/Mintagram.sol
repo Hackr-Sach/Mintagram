@@ -87,7 +87,6 @@ contract Mint_A_Gram is
         emit enteredDraw(msg.sender);
     }
 
-  
     // checkUpkeep Lottery status
     function checkUpkeep(bytes memory /*checkData*/)
         public

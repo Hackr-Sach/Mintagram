@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
+import {Button, Stack, Container} from 'react-bootstrap'
+import { MintagramNavbar } from "./components/Navbar";
 import { useMoralis, useMoralisFile } from "react-moralis";
 import axios from "axios";
-import { Divider, Heading, Stack } from "@chakra-ui/layout";
-import { Box, Button, Input } from "@chakra-ui/react";
 import { useCallMint } from "./hooks";
 
 // add multiple file support. for now single is fine.
@@ -13,8 +13,7 @@ import { useCallMint } from "./hooks";
 // resolve mintImage contract interaction [in progress]
 
 export const UploadMint = () => {
-  let contractAddr:any = "0xD6A9c9D318B24fB65a9CF977bdb874506D532743";
-  let testTURI:any = "https://ipfs.moralis.io:2053/ipfs/Qmf7mLDeaUABSDA6wcJpwXSZQuDuUJURtwyAU4h6Dnxcr5/metadata/broc.json";
+  let contractAddr:any = "0x315619e6773A8ef721a4956e2b5F24cF582FE44c";
   const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
   const { enableWeb3, authenticate, isAuthenticated, isAuthenticating, authError} = useMoralis();
   const [tempURI, setTempURI] = useState<any>({path: ''});
@@ -64,15 +63,16 @@ export const UploadMint = () => {
   useEffect( () => {if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
   return (
     <div>
-      <Stack spacing={6}>
-        <Heading>File</Heading>
-        <Box>
-          <Input accept=".png, .jpg, .jpeg" type="file" onChange={handleImgMeta} />
+      <Stack>
+        <h1>File</h1> 
+        <Container>
+          <input accept=".png, .jpg, .jpeg" type="file" onChange={handleImgMeta} />
           <Button onClick={handleMint}>Mint</Button>
-        </Box>
-       
+        </Container>
       </Stack>
+      <MintagramNavbar />
     </div>
+    
     
   )
 };

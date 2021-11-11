@@ -1,5 +1,5 @@
-import { Button } from '@chakra-ui/react';
-import { Container, Heading } from '@chakra-ui/layout';
+import {Button, Container} from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useMoralis } from 'react-moralis';
 import { Auth } from './Auth';
 import { UploadMint } from './UploadMint';
@@ -10,7 +10,7 @@ function App() {
   if (isAuthenticated) {
     return (
       <Container>
-        <Heading>Mint-a-Gram</Heading>
+        <h1>Mintagram</h1>
         <Button onClick={() => logout()}>Logout</Button>
         <UploadMint />
       </Container>
@@ -19,7 +19,7 @@ function App() {
 
   return (
     <Container>
-      <Heading mb={6}>Welcome - Log in or sign up</Heading>
+      <h1>Welcome - Log in or sign up</h1>
       <Auth />
     </Container>
   );
