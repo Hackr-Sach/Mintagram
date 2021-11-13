@@ -20,7 +20,7 @@ contract Mint_A_Gram is
     using Counters for Counters.Counter;
     // Mint factory variables
     Counters.Counter private x_tokenIds; 
-    string public x_tokenURI;
+    mapping(uint256=>string) private x_uris;
     mapping (address => uint) public x_userMintCount;
     // Mint Lottery variables
     bytes32 public x_keyHash;
@@ -50,7 +50,7 @@ contract Mint_A_Gram is
         uint256 _chainlinkFee,
         uint256 _ticketFee,
         uint256 _interval
-    ) ERC1155(x_tokenURI) VRFConsumerBase(_vrfCoordinator, _linkToken) {
+    ) public ERC1155("") VRFConsumerBase(_vrfCoordinator, _linkToken) {
         x_lastTimeStamp = block.timestamp;
         x_keyHash = _keyHash;
         x_chainlinkFee = _chainlinkFee;
@@ -59,17 +59,21 @@ contract Mint_A_Gram is
         x_theWinner = 0x0000000000000000000000000000000000000000;
         x_lotteryState = lotteryState.OPEN;
     }
-
+    function uri(uint256 tokenId) override public view returns(string memory){
+        return(x_uris[tokenId]);
+    }
+    function setTokenURI(uint256 tokenId, string memory uri) public {
+       require(bytes(x_uris[tokenId]).length == 0, "uri can only be set once.");
+        x_uris[tokenId] = uri;
+    }
     // Mint factory 
-    // TODO SET Mintagram network fee.
-    function mintImage(string memory tokenURI)
+    function mintImage()
         public
         payable
         returns (uint256)
     {
         x_tokenIds.increment();
         uint256 newItemId = x_tokenIds.current();
-        x_tokenURI = tokenURI;
         _mint(msg.sender, newItemId, 1, "");
         x_userMintCount[msg.sender] = x_userMintCount[msg.sender] + 1;
         if(x_userMintCount[msg.sender] % 3 == 0){
@@ -78,6 +82,8 @@ contract Mint_A_Gram is
         }
         return newItemId;
     }
+
+  
     // Mint Lottery functions START
     // TODO Set a fixed price using chainlink price feeds.
      function enterLottery() public payable {

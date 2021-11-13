@@ -1,82 +1,129 @@
 import React, { useState, useEffect } from "react";
-import {Button, Stack, Container} from 'react-bootstrap'
+import {Button, Stack, Container, Form} from 'react-bootstrap'
 import { MintagramNavbar } from "./components/Navbar";
 import { useMoralis, useMoralisFile } from "react-moralis";
 import axios from "axios";
-import { useCallMint } from "./hooks";
+import { useCallMint, useSetTokenUri } from "./hooks";
+import { Uint256 } from "soltypes";
 
-// add multiple file support. for now single is fine.
-// fix data race File uploads [] 
-// resolve and confirm consitent image urls [X]
-// move headers api-key into .env [x]
-// user meta data inputs:Description []
-// resolve mintImage contract interaction [in progress]
 
 export const UploadMint = () => {
-  let contractAddr:any = "0x315619e6773A8ef721a4956e2b5F24cF582FE44c";
+  const userAddress:any ="0x814dDd96FA03f46352c4A2C5787b4836408477fC";
+  let contractAddr:any = "0x45b0ddDA23e59393A2aa60Ee65b481b5df1d9a2A";
   const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
-  const { enableWeb3, authenticate, isAuthenticated, isAuthenticating, authError} = useMoralis();
-  const [tempURI, setTempURI] = useState<any>({path: ''});
-  const {handleMint, mintState} = useCallMint(contractAddr, tempURI)
-  //handling image & metadata IPFS start
-  const handleImgMeta = async (event: React.ChangeEvent<HTMLInputElement>) => {  
-    let ipfsArray:any = [];
-    if (event.currentTarget.files && event.currentTarget.files[0] != null) {
-      let fileName = event.currentTarget.files[0]
-       .name.replace(".png", '').replace(".jpeg", '').replace(".jpg", '')
-
-      await saveFile(event.currentTarget.files[0].name, event.currentTarget.files[0], { saveIPFS: true })
-        .then((res) => {
-          if(res != undefined)
-          ipfsArray.push({
-            path: `metadata/${fileName}.json`,
-              content: {
-                image: `${moralisFile == null ? "No image to show" : res?._url}`,
-                name: `${fileName}`,
-                description: "testing testing 123 ",
-              }
-            })
-          })
-          .catch( (error) => {
-            console.log(error)
-          }) 
-          axios.post("https://deep-index.moralis.io/api/v2/ipfs/uploadFolder", 
-          ipfsArray,
-            {
-              headers: {
-              "X-API-KEY": 'Moralis_API_KEY',
-              "Content-Type": "application/json",
-              "accept": "application/json"
-              } 
-            }).then( (res) => {
-              if(res.data[0].path)
-              setTempURI({path: res.data[0].path as any}) 
-              console.log(res.data)
-              console.log(tempURI.path)
-              
-            }).catch ( (error) => {
-              console.log(error)
-            })   
-      }
-  }
+  const { Moralis, enableWeb3, authenticate, isAuthenticated, isAuthenticating, authError} = useMoralis();
+  // form state variables
+  const[userDescription, setUserDescription] = useState<any>({value: ""})
+  const[usersImgUrl, setusersImgUrl] = useState<any|File>({value: ""})
+  const[userNftName, setUserNftName] = useState<any>({value: ""})
+  const[tokenURI, setTokenURI] = useState<any>({value: ''})
+  const[tokenId, setTokenId] = useState<any>({value: ""})
+  let ipfsArray:any = [];
+ 
 
   useEffect( () => {if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
+
+  //handling image & metadata IPFS start
+  const saveImageToIPFS = async (event: React.ChangeEvent<HTMLInputElement>) =>{
+    if (event.currentTarget.files && event.currentTarget.files[0] != null) {
+        await saveFile(event.currentTarget.files[0].name, event.currentTarget.files[0], { saveIPFS: true })
+        .then((res:any) => {   
+          setusersImgUrl((res as any))
+        })
+        .catch( (error) => {
+            console.log(error)
+          }) 
+      }
+    }
+  const nameOnChange = (event: { target: { value: React.SetStateAction<{}>; }; }) => {
+    setUserNftName({value: event.target.value})
+  }
+  const descOnChange = (event: { target: { value: React.SetStateAction<{}>; }; }) => {
+    setUserDescription({value: event.target.value})
+  }
+
+  const handleMeta = () => {  
+  ipfsArray.push({
+    path: `metadata/${userNftName.value}.json`,
+      content: {
+        image: `${usersImgUrl._url}`,
+        name: `${userNftName.value}`,
+        description: `${userDescription.value}`
+      }
+    })
+    axios.post("https://deep-index.moralis.io/api/v2/ipfs/uploadFolder", 
+    ipfsArray,
+      {
+        headers: {
+        "X-API-KEY": 'Moralis_API_KEY',
+        "Content-Type": "application/json",
+        "accept": "application/json"
+        } 
+      })
+      .then((res) => {
+        console.log(res.data)
+        setTokenURI(res)
+      })
+      .catch ( error => {
+        console.log(error)
+      }) 
+      
+  }
+  // const getTokenId = async () => {
+  //   // const options = {chain: 'rinkeby', address:`${userAddress}`, limit: "1"}
+  //   // const transfersNFT:any = await Moralis.Web3API.account.getNFTTransfers((options as any))
+  //   // .then( res => setTokenId(res))
+  //   // .catch( e => {
+  //   //   console.log(e)
+  //   // })
+  //   // console.log(tokenId)
+  // }
+  // calls a hook to handle the contract interaction with mint  useSetTokenUri
+  const {handleMint, mintState} = useCallMint(contractAddr)
+  // calls a hook to set token URI for user mint
+  
+  const {handleSetTokenUri, tokenUriState} = useSetTokenUri(
+    contractAddr, 
+    (4 as unknown as Uint256), 
+    tokenURI.data ? (tokenURI.data[0].path as any) : '',
+    )
+
   return (
     <div>
+      <MintagramNavbar />
       <Stack>
-        <h1>File</h1> 
         <Container>
-          <input accept=".png, .jpg, .jpeg" type="file" onChange={handleImgMeta} />
+          <h4>Upload your image</h4>
+          <input accept=".png, .jpg, .jpeg" type="file" onChange={saveImageToIPFS} />
+          <h4>Set your meta data</h4>
+          <Form>
+            <Form.Group className="mb-3" controlId="userNftName">
+              <Form.Label>Name</Form.Label>
+                <Form.Control type="textarea" placeholder="name your photo" onChange={nameOnChange} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="userDesc">
+              <Form.Label>Describe your photo</Form.Label>
+                <Form.Control 
+                  as="textarea" 
+                  rows={3} 
+                  placeholder="enter a description" 
+                  onChange={descOnChange}/>
+              </Form.Group>
+              <Button variant="primary" type="button" onClick={handleMeta} >
+                Submit
+              </Button>
+            </Form>
+     
+          <h4>Create token</h4>
           <Button onClick={handleMint}>Mint</Button>
+          {/* <Button onClick={getTokenId}>getTokenId</Button> */}
+          <h4>Set token uri</h4> 
+          <Button onClick={handleSetTokenUri}>Set URI</Button>
         </Container>
       </Stack>
-      <MintagramNavbar />
     </div>
     
     
   )
-};
-
-
-
+}
 
