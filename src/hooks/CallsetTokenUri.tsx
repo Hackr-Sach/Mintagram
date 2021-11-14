@@ -9,8 +9,6 @@ export const useSetTokenUri = (contractAddress: string, tokenId: Uint256, uri: s
   const {abi} = Mint_A_Gram;
   const handleSetTokenUri = async () => {
     
-    console.log(tokenId)
-    console.log(uri)
     setTokenUriState({status: "setting your token URI"})
     
     const opts = {

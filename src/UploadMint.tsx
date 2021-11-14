@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {Button, Stack, Container, Form} from 'react-bootstrap'
 import { MintagramNavbar } from "./components/Navbar";
-import { useMoralis, useMoralisFile } from "react-moralis";
+import { useMoralis, useMoralisFile, useMoralisWeb3Api } from "react-moralis";
 import axios from "axios";
 import { useCallMint, useSetTokenUri } from "./hooks";
 import { Uint256 } from "soltypes";
 
 export const UploadMint = () => {
-  const userAddress:any ="0x72D1CbA159e87c017C9e9f672efBab3C2DfBfadA";
-  const contractAddress = (process.env.DEPLOYED_CONTRACT as string)
+  const userAddress:any ="0xFb65A9e3B18abcF21F926e1C213887369EbF75Fd";
+  const contractAddress = (process.env.REACT_APP_DEPLOYED_CONTRACT as string)
   const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
   const { Moralis, enableWeb3, authenticate, isAuthenticated, isAuthenticating, authError} = useMoralis();
   // state 
@@ -16,12 +16,11 @@ export const UploadMint = () => {
   const[usersImgUrl, setusersImgUrl] = useState<any|File>({value: ""})
   const[userNftName, setUserNftName] = useState<any>({value: ""})
   const[tokenURI, setTokenURI] = useState<any>({value: ''})
-  const[tokenId, setTokenId] = useState<any>({value: ""})
   let ipfsArray:any = [];
  
 
   useEffect( () => {if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
-
+  
   //handling image & metadata IPFS start
   const saveImageToIPFS = async (event: React.ChangeEvent<HTMLInputElement>) =>{
     if (event.currentTarget.files && event.currentTarget.files[0] != null) {
@@ -68,22 +67,15 @@ export const UploadMint = () => {
       }) 
       
   }
-  // const getTokenId = async () => {
-  //   // const options = {chain: 'rinkeby', address:`${userAddress}`, limit: "1"}
-  //   // const transfersNFT:any = await Moralis.Web3API.account.getNFTTransfers((options as any))
-  //   // .then( res => setTokenId(res))
-  //   // .catch( e => {
-  //   //   console.log(e)
-  //   // })
-  //   // console.log(tokenId)
-  // }
-  // calls a hook to handle the contract interaction with mint  useSetTokenUri
-  const {handleMint, mintState} = useCallMint(contractAddress)
-  // calls a hook to set token URI for user mint
   
+
+  // calls a hook to handle the contract interaction with mint  useSetTokenUri
+  const {handleMint, txID} = useCallMint(contractAddress)
+  
+  // calls a hook to set token URI for user mint
   const {handleSetTokenUri, tokenUriState} = useSetTokenUri(
     contractAddress, 
-    (8 as unknown as Uint256), 
+    (txID.status as any), 
     tokenURI.data ? (tokenURI.data[0].path as any) : '',
     )
 
@@ -115,7 +107,6 @@ export const UploadMint = () => {
      
           <h4>Create token</h4>
           <Button onClick={handleMint}>Mint</Button>
-          {/* <Button onClick={getTokenId}>getTokenId</Button> */}
           <h4>Set token uri</h4> 
           <Button onClick={handleSetTokenUri}>Set URI</Button>
         </Container>
