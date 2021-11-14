@@ -62,7 +62,7 @@ contract Mint_A_Gram is
     function uri(uint256 tokenId) override public view returns(string memory){
         return(x_uris[tokenId]);
     }
-    function setTokenURI(uint256 tokenId, string memory uri) public {
+    function setTokenURI(uint256 tokenId, string memory uri) public payable{
        require(bytes(x_uris[tokenId]).length == 0, "uri can only be set once.");
         x_uris[tokenId] = uri;
     }

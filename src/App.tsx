@@ -13,9 +13,7 @@ function App() {
       <div>
         <MintagramNavbar />
         <Container>
-        <h1>Mintagram</h1>
-        <Button onClick={() => logout()}>Logout</Button>
-        <Home />
+          <Home />
       </Container>
       </div>
     );

@@ -6,13 +6,12 @@ import axios from "axios";
 import { useCallMint, useSetTokenUri } from "./hooks";
 import { Uint256 } from "soltypes";
 
-
 export const UploadMint = () => {
-  const userAddress:any ="0x814dDd96FA03f46352c4A2C5787b4836408477fC";
-  let contractAddr:any = "0x45b0ddDA23e59393A2aa60Ee65b481b5df1d9a2A";
+  const userAddress:any ="0x72D1CbA159e87c017C9e9f672efBab3C2DfBfadA";
+  const contractAddress = (process.env.DEPLOYED_CONTRACT as string)
   const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
   const { Moralis, enableWeb3, authenticate, isAuthenticated, isAuthenticating, authError} = useMoralis();
-  // form state variables
+  // state 
   const[userDescription, setUserDescription] = useState<any>({value: ""})
   const[usersImgUrl, setusersImgUrl] = useState<any|File>({value: ""})
   const[userNftName, setUserNftName] = useState<any>({value: ""})
@@ -79,12 +78,12 @@ export const UploadMint = () => {
   //   // console.log(tokenId)
   // }
   // calls a hook to handle the contract interaction with mint  useSetTokenUri
-  const {handleMint, mintState} = useCallMint(contractAddr)
+  const {handleMint, mintState} = useCallMint(contractAddress)
   // calls a hook to set token URI for user mint
   
   const {handleSetTokenUri, tokenUriState} = useSetTokenUri(
-    contractAddr, 
-    (4 as unknown as Uint256), 
+    contractAddress, 
+    (8 as unknown as Uint256), 
     tokenURI.data ? (tokenURI.data[0].path as any) : '',
     )
 
@@ -126,4 +125,5 @@ export const UploadMint = () => {
     
   )
 }
+
 
