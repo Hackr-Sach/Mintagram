@@ -29,8 +29,6 @@ export const useSetTokenUri = (contractAddress: string, tokenId: Uint256, uri: s
 
     if(setTokenUri != null || undefined)
     setTokenUriState({status: tokenUriState.status.value})
-    
   } 
-
 return {handleSetTokenUri, tokenUriState} 
 }

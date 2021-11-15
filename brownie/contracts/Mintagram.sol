@@ -16,7 +16,6 @@ contract Mint_A_Gram is
     KeeperCompatibleInterface,
     ReentrancyGuard
 {
-    using SafeMath for uint256;
     using Counters for Counters.Counter;
     // Mint factory variables
     Counters.Counter private x_tokenIds; 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import { useMoralis, } from 'react-moralis';
-
+import { BuyCrypto } from './components/BuyCrptoBtn';
 import {
   Button,
   Stack,
@@ -15,13 +15,10 @@ import {
 } from '@chakra-ui/react';
 
 export const Auth = () => {
-  const {Moralis , enableWeb3, authenticate, isAuthenticated, isAuthenticating, authError, signup, login } = useMoralis();
+  const {enableWeb3, authenticate, isAuthenticated, isAuthenticating, authError, signup, login } = useMoralis();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   
-  function buyCrypto(){
-    (Moralis as any).Plugins.fiat.buy();
-  }
 
   useEffect( () =>{if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
   
@@ -69,7 +66,7 @@ export const Auth = () => {
       />
       <Button onClick={() => login(email, password)}>Login</Button>
     </Stack>
-    <Button onClick={() => buyCrypto()}>Buy crypto</Button>
+    <BuyCrypto />
     </Stack>
   );
 };

@@ -28,7 +28,6 @@ export const useCallMint = (contractAddress: string) => {
     if(mintImage != null || undefined)
     setTxID({status: mintImage.events.TransferSingle.returnValues.id})
     
-
   } 
 console.log(txID)
 return {handleMint, txID} 

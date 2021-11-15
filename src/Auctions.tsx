@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container } from "react-bootstrap";
-import { useMoralisFile } from "react-moralis";
+import { useMoralis } from "react-moralis";
 import { MintagramNavbar } from "./components/Navbar";
 
 export const Auctions = () => {

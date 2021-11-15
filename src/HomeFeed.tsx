@@ -13,9 +13,12 @@ useEffect( () => {if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
 const[userTypedSearch, setUserTypedSearch] = useState<any>({value: ""})
 
 const getNFTs = async() => {
+// reset state and clear search results
 setUserTypedSearch({value: ''});
 $("div.homeFeedContent").html('')
+// query args
 const options:any = { q: userTypedSearch.value, chain: "rinkeby", filter: "name,description,attributes", limit: 25 };
+// query call + populating elements with result.
 await Moralis.Web3API.token.searchNFTs (options).then( res => {
     if(res.result != undefined)
     res.result.forEach( (nft: { token_uri: string | null; }) => {
@@ -35,10 +38,13 @@ await Moralis.Web3API.token.searchNFTs (options).then( res => {
   })
   .catch( error => {console.log(error);});
 }
+// event handler
 const typedSearchOnChange = (event: { target: { value: React.SetStateAction<{}>; }; }) => {
     setUserTypedSearch({value: event.target.value})
   }
+// hook handles contract function call.
 const {handleLottoEntry, entryState} = useEnterLottery()
+
     return(
         <div>
           <div className='HomeBanner'>  {/* maybe temp? */}

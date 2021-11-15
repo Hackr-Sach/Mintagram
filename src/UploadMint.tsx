@@ -4,24 +4,22 @@ import { MintagramNavbar } from "./components/Navbar";
 import { useMoralis, useMoralisFile, useMoralisWeb3Api } from "react-moralis";
 import axios from "axios";
 import { useCallMint, useSetTokenUri } from "./hooks";
-import { Uint256 } from "soltypes";
 
 export const UploadMint = () => {
-  const userAddress:any ="0xFb65A9e3B18abcF21F926e1C213887369EbF75Fd";
-  const contractAddress = (process.env.REACT_APP_DEPLOYED_CONTRACT as string)
   const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
-  const { Moralis, enableWeb3, authenticate, isAuthenticated, isAuthenticating, authError} = useMoralis();
-  // state 
+  const { Moralis, enableWeb3, authenticate, isAuthenticated, isAuthenticating, authError, user } = useMoralis();
+  // state variable
   const[userDescription, setUserDescription] = useState<any>({value: ""})
   const[usersImgUrl, setusersImgUrl] = useState<any|File>({value: ""})
   const[userNftName, setUserNftName] = useState<any>({value: ""})
   const[tokenURI, setTokenURI] = useState<any>({value: ''})
+  // an array which holds our meta values
   let ipfsArray:any = [];
- 
+  const contractAddress = (process.env.REACT_APP_DEPLOYED_CONTRACT as string)
 
   useEffect( () => {if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
   
-  //handling image & metadata IPFS start
+  //handle file upload/save to ipfs
   const saveImageToIPFS = async (event: React.ChangeEvent<HTMLInputElement>) =>{
     if (event.currentTarget.files && event.currentTarget.files[0] != null) {
         await saveFile(event.currentTarget.files[0].name, event.currentTarget.files[0], { saveIPFS: true })
@@ -33,13 +31,14 @@ export const UploadMint = () => {
           }) 
       }
     }
+  // input handlers
   const nameOnChange = (event: { target: { value: React.SetStateAction<{}>; }; }) => {
     setUserNftName({value: event.target.value})
   }
   const descOnChange = (event: { target: { value: React.SetStateAction<{}>; }; }) => {
     setUserDescription({value: event.target.value})
   }
-
+// construct the metadata array and post to ipfs
   const handleMeta = () => {  
   ipfsArray.push({
     path: `metadata/${userNftName.value}.json`,
@@ -68,7 +67,6 @@ export const UploadMint = () => {
       
   }
   
-
   // calls a hook to handle the contract interaction with mint  useSetTokenUri
   const {handleMint, txID} = useCallMint(contractAddress)
   
@@ -79,6 +77,13 @@ export const UploadMint = () => {
     tokenURI.data ? (tokenURI.data[0].path as any) : '',
     )
 
+    /*
+      We want to make this into a 3 step flow. Use of spinners, loading bars or whatever seems fit to make
+      this experience feel as smooth as possible.
+      1. enter and submit meta data
+      2. mint your token
+      3. set your tokenURI
+    */
   return (
     <div>
       <MintagramNavbar />
@@ -99,12 +104,9 @@ export const UploadMint = () => {
                   rows={3} 
                   placeholder="enter a description" 
                   onChange={descOnChange}/>
-              </Form.Group>
-              <Button variant="primary" type="button" onClick={handleMeta} >
-                Submit
-              </Button>
-            </Form>
-     
+            </Form.Group>
+              <Button variant="primary" type="button" onClick={handleMeta}>Submit</Button>
+          </Form>
           <h4>Create token</h4>
           <Button onClick={handleMint}>Mint</Button>
           <h4>Set token uri</h4> 
@@ -112,8 +114,6 @@ export const UploadMint = () => {
         </Container>
       </Stack>
     </div>
-    
-    
   )
 }
 

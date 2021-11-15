@@ -5,7 +5,7 @@ const contractAddress = process.env.REACT_APP_DEPLOYED_CONTRACT
 
 export const useEnterLottery = () => {
 
-  const {Moralis, enableWeb3} = useMoralis()
+  const {Moralis} = useMoralis()
   const[entryState, setEntryState] = useState<any>({status: ""})
   const {abi} = Mint_A_Gram;
 

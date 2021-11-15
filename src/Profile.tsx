@@ -6,19 +6,25 @@ import { MintagramNavbar } from "./components/Navbar";
 import $ from 'jquery';
 import "./Profile.css";
 import { fixURL } from "./helpers/fixURL";
+import Moralis from "moralis/types";
+
 
 export const UserProfile = () => {
 let ProfileImage = "https://toontimepod.files.wordpress.com/2018/06/yvon_frozen.jpg?w=1000&h=563";
-let profileGalleryLoaded = false;
-const { Moralis, enableWeb3, isAuthenticated, authError} = useMoralis();
+let profileGalleryLoaded = false; // prevents duplicates. Load once if not laoded.
+const { Moralis, enableWeb3, isAuthenticated, authError, setUserData, user} = useMoralis();
 useEffect( () => {if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
 useEffect( () => {if(isAuthenticated && !profileGalleryLoaded){ getNFTs()}}, [isAuthenticated,profileGalleryLoaded])
 
+let cUser:Moralis.Attributes  = (user as any);
+
 const getNFTs = async() => {
+  // query args
   const options:any = {
       chain: 'rinkeby',
       address: '0xFb65A9e3B18abcF21F926e1C213887369EbF75Fd'
   }
+  // query call + populating elements with res
   await Moralis.Web3.getNFTs(options)
   .then( res => {
     res.forEach( nft => {
@@ -46,7 +52,7 @@ const getNFTs = async() => {
          <Container>
           <div className='ProfileBanner'>
             <img className='ProfileImg' src={ProfileImage} alt="" />
-            <p>about me</p>
+            {/* <h4>Logged in as:  {((user as any).get("username") as string)}</h4><p>about me: </p> */}
           </div>
           
           <div className='profileHeader'></div>
