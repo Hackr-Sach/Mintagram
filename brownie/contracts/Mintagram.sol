@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";   
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";  
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol"; // for testings conveniece
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
@@ -49,7 +48,7 @@ contract Mint_A_Gram is
         uint256 _chainlinkFee,
         uint256 _ticketFee,
         uint256 _interval
-    ) public ERC1155("") VRFConsumerBase(_vrfCoordinator, _linkToken) {
+    ) public ERC1155("") VRFConsumerBase(_vrfCoordinator, _linkToken) { 
         x_lastTimeStamp = block.timestamp;
         x_keyHash = _keyHash;
         x_chainlinkFee = _chainlinkFee;
@@ -90,6 +89,12 @@ contract Mint_A_Gram is
         require(x_lotteryState == lotteryState.OPEN, "Lottery is not open");
         x_usersEntered.push(payable(msg.sender));
         emit enteredDraw(msg.sender);
+    }
+      function MOCK_enterLottery(address sender) public payable {
+        //require(msg.value >= x_ticketFee, "Not enough value sent to enter");
+        require(x_lotteryState == lotteryState.OPEN, "Lottery is not open");
+        x_usersEntered.push(payable(sender));
+        emit enteredDraw(sender);
     }
 
     // checkUpkeep Lottery status
@@ -150,16 +155,16 @@ contract Mint_A_Gram is
         );
     }
 
+    function getNumLotteryEntries() public view returns(uint256){
+        return x_usersEntered.length;
+    }
+
     // function getPlayerStats() public view {
     // loop over the player array and return a count of a players entries.
     // return the number of entries from player x / y entries.
     // }
     
     // Mint Lottery functions END
-
-    // Mint Auctions functions START
-
-    // Mint Auctions functions END
 
     // Mint DAC START
 

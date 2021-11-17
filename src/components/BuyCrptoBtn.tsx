@@ -7,5 +7,5 @@ export const BuyCrypto = () => {
     function _buyCrypto(){
         (Moralis as any).Plugins.fiat.buy();
       }
-    return(<Button onClick={_buyCrypto}>Buy Crpto</Button> );
+    return(<Button onClick={_buyCrypto}>Buy Crypto</Button> );
 }
