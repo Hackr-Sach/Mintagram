@@ -40,6 +40,7 @@ contract Mint_A_Gram is
     event enteredDraw(address indexed player);
     event requestedDrawWinner(bytes32 indexed requestId);
     event winnerChosen(address indexed player);
+    
 
     constructor(
         address _vrfCoordinator,
@@ -81,6 +82,10 @@ contract Mint_A_Gram is
         return newItemId;
     }
 
+    function setApprovals(address _operator, bool _approved)public {
+        this.setApprovalForAll(_operator, _approved);
+        emit ApprovalForAll(msg.sender, _operator, _approved);
+    }
   
     // Mint Lottery functions START
     // TODO Set a fixed price using chainlink price feeds.
@@ -89,12 +94,6 @@ contract Mint_A_Gram is
         require(x_lotteryState == lotteryState.OPEN, "Lottery is not open");
         x_usersEntered.push(payable(msg.sender));
         emit enteredDraw(msg.sender);
-    }
-      function MOCK_enterLottery(address sender) public payable {
-        //require(msg.value >= x_ticketFee, "Not enough value sent to enter");
-        require(x_lotteryState == lotteryState.OPEN, "Lottery is not open");
-        x_usersEntered.push(payable(sender));
-        emit enteredDraw(sender);
     }
 
     // checkUpkeep Lottery status
@@ -169,6 +168,7 @@ contract Mint_A_Gram is
     // Mint DAC START
 
     // Mint DAC END
+ 
     receive() external payable {}
 }
 

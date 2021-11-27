@@ -1,9 +1,9 @@
-from brownie import Mint_Auction_Base
+from brownie import ClockAuction
 from scripts.helpful_scripts import  get_account
 
 def deploy():
     account = get_account()
-    Mint_Auction_Base.deploy(
+    ClockAuction.deploy(
         {"from": account}, 
         publish_source=True,
         )
