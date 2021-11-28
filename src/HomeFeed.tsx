@@ -11,10 +11,15 @@ export const Home = () => {
 const { Moralis, enableWeb3, isAuthenticated, authError} = useMoralis();
 useEffect( () => {if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
 const[userTypedSearch, setUserTypedSearch] = useState<any>({value: ""})
+const[NFTqueryResult, setNFTqueryResult] = useState<any>({value:""})
+
+let allNFT = [{}]; // holding an array of all nft objects
 
 const getNFTs = async() => {
+
 // reset state and clear search results
 setUserTypedSearch({value: ''});
+
 $("div.homeFeedContent").html('')
 // query args
 const options:any = { q: userTypedSearch.value, chain: "rinkeby", filter: "name,description,attributes", limit: 25 };
@@ -31,7 +36,11 @@ await Moralis.Web3API.token.searchNFTs (options).then( res => {
               $("div.homeFeedContent").html($("div.homeFeedContent").html() + "<img width=300 height=300 src="+data.image+"/>")
               $("div.homeFeedContent").html($("div.homeFeedContent").html() + "<h3>"+ data.name +"</h3>")
               $("div.homeFeedContent").html($("div.homeFeedContent").html() + "<p>"+ data.description +"</p>")
+              
             }
+          setNFTqueryResult(data) // setting the state
+          allNFT.push((NFTqueryResult as any))  // pushing the state to an array
+          //console.log(allNFT)   // Log of allNFT
           return (data.json as any)
             })
           .catch( error => console.log(error))})    
@@ -45,6 +54,8 @@ const typedSearchOnChange = (event: { target: { value: React.SetStateAction<{}>;
 // hook handles contract function call.
 const {handleLottoEntry, entryState} = useEnterLottery()
 
+
+console.log(allNFT)
     return(
         <div>
           <div className='HomeBanner'>  {/* maybe temp? */}
