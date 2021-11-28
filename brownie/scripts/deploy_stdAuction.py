@@ -1,9 +1,9 @@
-from brownie import  TestAuction, EnglishAuction
+from brownie import  StandardAuction
 from scripts.helpful_scripts import get_account
 
 def deploy():
     account = get_account()
-    TestAuction.deploy(
+    StandardAuction.deploy(
         1200, #network fee 1200/10000 * salePrice
         "0xdD3782915140c8f3b190B5D67eAc6dc5760C46E9", #vrfcoord
         "0xa36085F69e2889c224210F603D836748e7dC0088", #linktoken

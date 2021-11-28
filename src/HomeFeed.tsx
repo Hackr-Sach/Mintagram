@@ -62,8 +62,10 @@ const {handleLottoEntry, entryState} = useEnterLottery()
           </Container>         
         
           <Container >
-            <div className="gallery">
+            <div className="encapsulated">
+              <div>
               <div className='homeFeedContent'></div>
+              </div>  
             </div>
          </Container>
         </div>  

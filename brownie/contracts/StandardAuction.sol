@@ -14,7 +14,7 @@ import "./MintAuctionBase.sol";
 // for more detail look in AuctionBase.sol
 // for more detail look in AuctionBase.sol
 
-contract TestAuction is MintAuction, ERC1155Holder, VRFConsumerBase, KeeperCompatibleInterface {
+contract StandardAuction is MintAuction, ERC1155Holder, VRFConsumerBase, KeeperCompatibleInterface {
     bytes32 public x_keyHash;
     uint256 public x_chainlinkFee;
     constructor(
@@ -91,7 +91,14 @@ contract TestAuction is MintAuction, ERC1155Holder, VRFConsumerBase, KeeperCompa
         require(_onAuction(_nft, _tokenId));
         _cancelAuction(auction.seller, _nft, _tokenId);
     }
-
+    // get all auctions
+    function getAuctions() public view returns(Auction[] memory){
+        Auction[] memory ref;
+        for(int i = 0; i < int(autoResolveQ.length); i++){
+            ref[uint(i)] = autoResolveQ[uint(i)];
+        }
+        return ref;
+    }
     // get an auction
     function getAuction(address _nft, uint256 _tokenId)
      public view returns(
@@ -114,41 +121,47 @@ contract TestAuction is MintAuction, ERC1155Holder, VRFConsumerBase, KeeperCompa
                     bool(_onAuction(_nft, _tokenId))
                 );
         }
-    uint[] public indexRef;
+    // Im thinking that we use this to track ids still but in a more secondary way
+    // using a memory reference to interface with autoResolveQ and stash indexs or send particular credentials ( NFT, tokenId )
+    //uint[] public indexRef; 
     function checkUpkeep(bytes memory /*checkData*/)
         public
+        view
         override
         returns (bool upKeepNeeded, bytes memory performData)
     {
-        //handles index ref
-         for(int i = 0; int(i) < int(autoResolveQ.length); i++){
-            address nft = autoResolveQ[uint256(i)].nft;
-            uint256 tokenId = autoResolveQ[uint256(i)].tokenId;
+        Auction[] memory ref = autoResolveQ;
+        uint[] memory indexRef; 
+        uint count = 0;
+        bool go = false;
+        for(int i = 0; i < int(ref.length); i++){
+            address nft = ref[uint256(i)].nft;
+            uint256 tokenId = ref[uint256(i)].tokenId;
             if(!_onAuction(nft, tokenId)){
-                indexRef.push(uint(i));
+                go = true;
+                indexRef[count] = uint(i); 
+                count++;
             }
-        }
-        bool AuctionsToResolve = indexRef.length >= 1 ? true : false;
-        require(AuctionsToResolve, "No auctions to resolve");
-        upKeepNeeded = (AuctionsToResolve);
-        performData = abi.encode(indexRef);
+        } 
+        upKeepNeeded = (go);
+        performData = abi.encode(indexRef); // bytes("");
     }
     event PerformedUPKEEP();
     function performUpkeep(bytes calldata performData) external override {
         uint[] memory ref = abi.decode(performData, (uint[]));
-        require(address(this).balance >= 0, "Not enough ETH");
+        //require(address(this).balance >= 0, "Not enough ETH");
         (bool upKeepNeeded, ) = checkUpkeep("");
         require(upKeepNeeded, "No upkeep needed");
-        //resolve an auction.
+        //resolve an auction
         for(int i = 0; i < int(ref.length); i++){
             uint idx = ref[uint(i)];
-            Auction storage auc = autoResolveQ[idx];
+            Auction storage auc = autoResolveQ[idx]; // mock auction holding the id and address
             _End(auc.nft, auc.tokenId);
             autoResolveQ[idx] = autoResolveQ[autoResolveQ.length-1];
             autoResolveQ.pop();
-            indexRef[idx] = indexRef[indexRef.length-1];
-            indexRef.pop();
+        
         }
+        //delete ref;
         emit PerformedUPKEEP(); 
     }
 

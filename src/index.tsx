@@ -7,6 +7,7 @@ import { Home } from "./HomeFeed";
 import { UploadMint } from "./UploadMint";
 import { Auctions } from "./Auctions";
 import { UserProfile } from "./Profile";
+import { CreateAuction } from "./AuctionsCreate";
 
 const appId = process.env.REACT_APP_MORALIS_APP_ID!;
 const serverUrl = process.env.REACT_APP_MORALIS_SERVER_URL!;
@@ -20,6 +21,7 @@ ReactDOM.render(
             <Route exact path="/Home" component={App} />
             <Route exact path="/Mint-Images" component={UploadMint} /> 
             <Route exact path="/Auctions" component={Auctions} />
+            <Route exact path="/CreateAuction" component={CreateAuction} />
             <Route exact path="/Profile" component={UserProfile} />
           </Switch>
       </BrowserRouter>

@@ -30,4 +30,3 @@ def get_account(index=None, id=None):
 #     tx = link_token.transfer(contract_address, amount, {"from": account})
 #     print(f"Funded {contract_address} with LINK")
 #     return tx
-
