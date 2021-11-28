@@ -4,6 +4,7 @@ import { MoralisProvider, useMoralis } from "react-moralis";
 import App from "./App";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { Home } from "./HomeFeed";
+import { MintagramNavbar } from './components/Navbar';
 import { UploadMint } from "./UploadMint";
 import { Auctions } from "./Auctions";
 import { UserProfile } from "./Profile";
@@ -17,9 +18,10 @@ ReactDOM.render(
     <MoralisProvider appId={appId} serverUrl={serverUrl}>
       <BrowserRouter>
         <div id="app-wrapper">
+          <MintagramNavbar />
           <Switch>
             <Route exact path="/" component={App} />
-            <Route exact path="/Home" component={App} />
+            <Route exact path="/Home" component={Home} />
             <Route exact path="/Mint-Images" component={UploadMint} /> 
             <Route exact path="/Auctions" component={Auctions} />
             <Route exact path="/CreateAuction" component={CreateAuction} />

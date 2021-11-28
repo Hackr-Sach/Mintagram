@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {Button, Stack, Container, Form} from 'react-bootstrap'
 import { useMoralis } from "react-moralis";
-import { MintagramNavbar } from "./components/Navbar";
 import { useCreateAuction, useGetAuction, useGetAuctions } from "./hooks";
 
 export const CreateAuction = () => {
@@ -51,7 +50,6 @@ export const CreateAuction = () => {
 
         return(
         <div>
-        <MintagramNavbar />
         <Stack>
           <Container>
             <h4>Create an Auction</h4>

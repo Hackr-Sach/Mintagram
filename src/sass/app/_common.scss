@@ -12,3 +12,10 @@ body#webapp {
         margin-bottom: 3rem;
     }
 }
+
+.ui-icon-small {
+    svg {
+        width: 32px;
+        height: auto;
+    }
+}

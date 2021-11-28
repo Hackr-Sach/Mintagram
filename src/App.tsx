@@ -3,7 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useMoralis } from 'react-moralis';
 import { Auth } from './Auth';
 import { UploadMint } from './UploadMint';
-import { MintagramNavbar } from './components/Navbar';
+
+import { Footer } from './Footer';
 import { Home } from './HomeFeed';
 
 function App() {
@@ -12,11 +13,9 @@ function App() {
   if (isAuthenticated) {
     return (
       <div id="app-inner">
-        <MintagramNavbar />
         <Container>
           <h1>Mintagram</h1>
           <Button onClick={() => logout()}>Logout</Button>
-          <Container>
           <UploadMint />
           <Footer />
         </Container>

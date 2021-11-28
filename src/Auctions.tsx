@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Button} from "react-bootstrap";
 import { useMoralis } from "react-moralis";
-import { MintagramNavbar } from "./components/Navbar";
 import { useGetAuction, useGetAuctions } from "./hooks";
 
  
@@ -12,7 +11,6 @@ export const Auctions = () => {
 
     return(
       <div>
-          <MintagramNavbar />
           <Container>
             <h1>Auctions</h1>
 

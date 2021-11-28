@@ -7670,6 +7670,10 @@ body#webapp {
   margin-top: 3rem;
   margin-bottom: 3rem; }
 
+.ui-icon-small svg {
+  width: 32px;
+  height: auto; }
+
 @font-face {
   font-family: 'Space Mono';
   src: url(".././fonts/subset-SpaceMono-Regular.woff2") format("woff2"), url(".././fonts/subset-SpaceMono-Regular.woff") format("woff");
@@ -7708,6 +7712,11 @@ body#webapp {
   height: 150px; }
   #nav-bar nav .navbar-nav .nav-link {
     color: #000000; }
+
+.search-bar {
+  display: flex;
+  height: 3rem;
+  align-items: center; }
 
 #gallery .card-list {
   display: flex; }

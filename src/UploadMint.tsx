@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {Button, Stack, Container, Form} from 'react-bootstrap'
-import { MintagramNavbar } from "./components/Navbar";
 import { useMoralis, useMoralisFile, useMoralisWeb3Api } from "react-moralis";
 import axios from "axios";
 import { useCallMint, useSetTokenUri } from "./hooks";
@@ -86,7 +85,6 @@ export const UploadMint = () => {
     */
   return (
     <div id="app-inner">
-      <MintagramNavbar />
       <div
         id="create-mint"
         className="standard-view">

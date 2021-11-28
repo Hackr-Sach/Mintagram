@@ -4,9 +4,9 @@ export const Footer = () => {
             <a 
                 href="mailto:mintagram@protonmail.com" 
                 class="link b f3 f2-ns dim black-70 lh-solid">
-                mintagram@protonmail.comm
+                mintagram@protonmail.com
             </a>
-            <p class="f6 db b ttu lh-solid">mintagram.</p>
+            <p class="f6 db b lh-solid">mintagram</p>
             <div class="mt5">
                 <a 
                     href="/profile/"    

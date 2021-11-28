@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useMoralis } from "react-moralis";
 import { Container} from "react-bootstrap";
-import { MintagramNavbar } from "./components/Navbar";
 import $ from 'jquery';
 import { fixURL } from "./helpers/fixURL";
 import Moralis from "moralis/types";
@@ -50,7 +49,6 @@ export const UserProfile = () => {
 
     return(
       <div id="app-inner">
-        <MintagramNavbar />
         <div
           id="create-mint"
           className="standard-view">
@@ -84,5 +82,4 @@ export const UserProfile = () => {
         </div>
       </div>
    );
->>>>>>> Stashed changes
 }
