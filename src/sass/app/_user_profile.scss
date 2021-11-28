@@ -1,0 +1,16 @@
+.profile-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include base-border;
+
+    .profile-image {
+        width: 9rem;
+        height: auto;
+    }
+
+    .profile-image,
+    .profile-header {
+
+    } 
+}

@@ -1,0 +1,63 @@
+// Use this file to overwrite the basic Bootstrap variables and add your own variables
+// To overwrite a Bootstrap variable you don´t have to touch the Bootstrap folder.
+// Just copy a variable from /sass/bootstrap/_variables.scss, paste it here and edit the value.
+// As example you find one of the most important Bootstrap variable below: $brand-primary.
+// Thats the ugly Bootstrap blue used for all the links, primary buttons etc.
+// Just add your color code here, compile the theme.scss file to change this color everywhere
+
+
+
+// Glyphicons font path
+// $icon-font-path:        "../fonts/";
+// $slick-loader-path:     "../images/";
+// $slick-font-path:       "../fonts/";
+
+// brand colour palette 2020
+$warm-red:  #f3503f;
+$nature-green: #4cab4c;
+$sky-blue: #9ad9eb;
+$ocean-blue: #1e88b9;
+
+// Colors
+$white:                 #ffffff;
+$black:                 #000000;
+$red:                   $warm-red;
+$blue:                  $sky-blue;
+$slate:                 #333d44;
+$green:                 $nature-green;
+
+$gray-100:              #f5f6f6;
+$gray-600:              #929196;
+$gray-700:              #828587;
+$gray-900:              #231f20;
+
+
+
+$brand-primary:         $blue;
+$brand-secondary:       $slate;
+
+$default-timing: cubic-bezier(0.19,1,0.22,1);
+
+
+$font-family-mono: 'Space Mono', courier, helvetica, sans-serif;
+$font-family: $font-family-mono;
+
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1500px,
+  xxxl: 1800px
+);
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1440px,
+  xxxl: 1740px
+);

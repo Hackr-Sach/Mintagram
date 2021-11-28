@@ -1,0 +1,14 @@
+body#webapp {
+    font-family: $font-family;
+}
+
+.btn-primary {
+    @inlcude base-btn;
+}
+
+.view-inner {
+    section {
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+    }
+}

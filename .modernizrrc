@@ -1,0 +1,17 @@
+{
+  "minify": true,
+  "options": [
+    "setClasses"
+  ],
+  "feature-detects": [
+    "css/cssgrid",
+    "css/flexbox",
+    "css/flexboxlegacy",
+    "css/flexboxtweener",
+    "css/flexwrap",
+    "css/objectfit",
+    "css/shapes",
+    "css/transforms",
+    "css/transitions"
+  ]
+}

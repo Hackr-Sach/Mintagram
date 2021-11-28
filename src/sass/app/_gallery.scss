@@ -1,0 +1,25 @@
+#gallery {
+
+    .card-list {
+        display: flex;
+
+        .card {
+            width: 50%;
+            display: flex;
+            
+            border: none;
+            border-radius: 0;
+            @include base-dropshadow;
+            @include base-border;
+
+            .card-image {
+                width: 100%;
+                height: auto;
+            }
+
+            .card-info {
+                padding: 1rem;
+            }
+        }
+    }
+}

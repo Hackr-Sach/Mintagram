@@ -1,0 +1,22 @@
+#nav-bar {
+    #logo {
+        svg {
+            width: 3rem;
+            height: auto;
+            
+            path {
+                fill: $black;
+            }
+        }
+    }
+
+    nav {
+        height: 150px;
+
+        .navbar-nav {
+            .nav-link {
+                color: $black;
+            }
+        }
+    }
+}

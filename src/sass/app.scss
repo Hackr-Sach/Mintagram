@@ -1,0 +1,12 @@
+/*****************************************************************
+Import all needed 3rd party sass files plus your own style and variables cheese
+***************************************************************** */
+// #gallery {
+//     background-color: blue;
+// }
+
+@import "app/app_variables";  // <--------- Add your variables into this file. Also add variables to overwrite Bootstrap or UnderStrap variables here
+@import "vendor";// <--------- Change from /bootstrap3 to /bootstrap4 Watch out! just for testing in the moment!
+
+// Any additional imported files //
+@import "app/app";  // <--------- Add your styles into this file
