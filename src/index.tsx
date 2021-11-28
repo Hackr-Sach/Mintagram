@@ -12,6 +12,7 @@ ReactDOM.render(
   <React.StrictMode>
     <MoralisProvider appId={appId} serverUrl={serverUrl}>
       <BrowserRouter>
+        <div id="app-wrapper">
           <Switch>
             <Route exact path="/Home" component={App} />
             <Route exact path="/Mint-Images" component={Home} />
@@ -19,6 +20,7 @@ ReactDOM.render(
             <Route exact path="/Auctions" component={Home} />
             <Route exact path="/Profile" component={Home} />
           </Switch>
+        </div>
       </BrowserRouter>
     </MoralisProvider>
   </React.StrictMode>,

@@ -62,6 +62,7 @@ export const UploadMint = () => {
 
   useEffect( () => {if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
   return (
+<<<<<<< Updated upstream
     <div>
       <Stack>
         <h1>File</h1> 
@@ -71,6 +72,40 @@ export const UploadMint = () => {
         </Container>
       </Stack>
       <MintagramNavbar />
+=======
+    <div id="app-inner">
+      <MintagramNavbar />
+      <div
+        id="create-mint"
+        className="standard-view">
+        <Container
+          className="view-inner"
+          >
+          <h4>Upload your image</h4>
+          <input accept=".png, .jpg, .jpeg" type="file" onChange={saveImageToIPFS} />
+          <h4>Set your meta data</h4>
+          <Form>
+            <Form.Group className="mb-3" controlId="userNftName">
+              <Form.Label>Name:</Form.Label>
+                <Form.Control type="textarea" placeholder="Name your mint" onChange={nameOnChange} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="userDesc">
+              <Form.Label>Describe your photo</Form.Label>
+                <Form.Control 
+                  as="textarea" 
+                  rows={3} 
+                  placeholder="Describe the mint" 
+                  onChange={descOnChange}/>
+            </Form.Group>
+              <Button variant="primary" type="button" onClick={handleMeta}>Submit</Button>
+          </Form>
+          <h4>Create token</h4>
+          <Button onClick={handleMint}>Mint</Button>
+          <h4>Set token uri</h4> 
+          <Button onClick={handleSetTokenUri}>Set URI</Button>          
+        </Container>
+      </div>
+>>>>>>> Stashed changes
     </div>
     
     
