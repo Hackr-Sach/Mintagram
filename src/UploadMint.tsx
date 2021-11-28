@@ -51,7 +51,7 @@ export const UploadMint = () => {
     ipfsArray,
       {
         headers: {
-        "X-API-KEY": 'Moralis_API_KEY',
+        "X-API-KEY": "pv0p5n9Kr0tsWlGizTZWTfGiU1ubIRYTi96kZJIOM7iXy4Lhi00mnkqvWQWxYhBh",
         "Content-Type": "application/json",
         "accept": "application/json"
         }

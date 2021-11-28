@@ -11,13 +11,11 @@ export const Home = () => {
   const { Moralis, enableWeb3, isAuthenticated, authError} = useMoralis();
   useEffect( () => {if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
   const[userTypedSearch, setUserTypedSearch] = useState<any>({value: ""})
-  const[NFTqueryResult, setNFTqueryResult] = useState<any>({value:""})
-  let allNFT = [{}]; // ref arr 4 holding an array of all nft objects
-
+  const[NFTqueryResult, setNFTqueryResult] = useState<any>({value:[]})
   const getNFTs = async() => {
   // reset state and clear search results
   setUserTypedSearch({value: ''});
-
+  let allNFT = [{}]; 
   $("div.homeFeedContent").html('')
   // query args
   const options:any = { q: userTypedSearch.value, chain: "rinkeby", filter: "name,description,attributes", limit: 25 };
@@ -33,9 +31,10 @@ export const Home = () => {
               if(data.image || data.name || data.description){
                 $("div.homeFeedContent").html($("div.homeFeedContent").html() + "<div class='card'>" + "<img src='" + data.image + "' /> <h3>" + data.name + "</h3>" + "<p>" + data.description + "</p>" + "</div > ")
               }
+          // ref arr 4 holding an array of all nft objects
             //setNFTqueryResult(data) // setting the state
-            allNFT.push((NFTqueryResult as any))
-            setNFTqueryResult(allNFT)
+            allNFT.push((data as any))
+            setNFTqueryResult((allNFT as any))
             return (data.json as any)
               })
             .catch( error => console.log(error))})
