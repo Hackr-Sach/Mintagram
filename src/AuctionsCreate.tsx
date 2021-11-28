@@ -29,7 +29,7 @@ export const CreateAuction = () => {
   }
   const startPriceOnChange = (event: { target: { value: React.SetStateAction<{}>; }; }) => {
     setStartPrice({value: event.target.value})
-    setHighestBidder({value: seller.value})
+    setHighestBidder({value: seller.value}) // ensure it was set, needs to be set for the createAuction params
   }
   const durationOnChange = (event: { target: { value: React.SetStateAction<{}>; }; }) => {
     setDuration({value: event.target.value})
