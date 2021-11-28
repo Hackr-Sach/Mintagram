@@ -1,0 +1,25 @@
+.HomeBanner{
+    background-color: lightcyan;
+}
+.BannerEnterLottery{
+    margin-left: 85%;
+    
+}
+.BannerMessage{
+    text-align: center;
+    padding-top: 30px;
+    margin-top: 15px;
+}
+.homeFeedContent{
+    margin-top: 50px;
+}
+.searchLabel{
+    padding-right: 10px;
+    margin-left: 40%;
+    margin-top: 15px;
+}
+.searchButton{
+    margin-left: 5px;
+    margin-bottom: 3px;
+    padding: 3px;
+}

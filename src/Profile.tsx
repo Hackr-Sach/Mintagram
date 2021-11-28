@@ -1,20 +1,3 @@
-import React, { useState } from "react";
-import { Heading, Stack } from "@chakra-ui/layout";
-import { Box, Button, Input } from "@chakra-ui/react";
-import { useMoralisFile } from "react-moralis";
-
-<<<<<<< Updated upstream
-export const Favorites = () => {
-
-    return(
-      <div>
-        <Stack spacing={6}>
-          <Heading>Profile</Heading>
-        </Stack>
-    </div>
-    
-    );
-=======
 import React, { useEffect } from "react";
 import { useMoralis } from "react-moralis";
 import { Container} from "react-bootstrap";
@@ -29,7 +12,7 @@ export const UserProfile = () => {
   let profileGalleryLoaded = false; // prevents duplicates. Load once if not laoded.
   const { Moralis, enableWeb3, isAuthenticated, authError, setUserData, user} = useMoralis();
   useEffect( () => {if(isAuthenticated){ enableWeb3()}}, [isAuthenticated])
-  
+
   useEffect( () => {if(isAuthenticated && !profileGalleryLoaded){ getNFTs()}}, [isAuthenticated,profileGalleryLoaded])
 
   let cUser:Moralis.Attributes  = (user as any);
@@ -49,7 +32,7 @@ export const UserProfile = () => {
           fetch(url)
             .then(res => res.json())
             .then(data => {
-              if(data.image || data.name || data.description){ 
+              if(data.image || data.name || data.description){
                 $("div.profileContent").html($("div.profileContent").html() + "<div class='card'>" + "<img class='card-image' src='" + data.image + "' /><div class='card-info'><h3>" + data.name + "</h3>" + "<p>" + data.description + "</p>" + "</div></div>")
                 // $("div.profileContent").html($("div.profileContent").html() + "<img width=300 height=300 src="+data.image+"/>")
                 // $("div.profileContent").html($("div.profileContent").html() + "<h3>"+ data.name +"</h3>")
@@ -74,25 +57,25 @@ export const UserProfile = () => {
           <Container
             className="view-inner">
             <section className='ProfileBanner profile-banner '>
-              <img 
-                className='ProfileImg profile-image' 
-                src={ProfileImage} 
+              <img
+                className='ProfileImg profile-image'
+                src={ProfileImage}
                 alt=" Profile Image" />
               <h3
                 className='profileHeader profile-header'>
 
                 {user != null ? user.id : 'no address'}
-              
-                
+
+
               </h3>
               {/* <h4>Logged in as:  {((user as any).get("username") as string)}</h4><p>about me: </p> */}
             </section>
-        
 
-            <section 
+
+            <section
               id="gallery"
               className="gallery gallery-view">
-              <div 
+              <div
                 id="profileContent"
                 className="profileContent feed-view card-list">
               </div>

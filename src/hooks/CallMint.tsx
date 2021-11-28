@@ -1,36 +1,34 @@
 import  {useMoralis} from "react-moralis"
 import Mint_A_Gram from ".././abi/Mint_A_Gram.json";
 import { useState } from "react";
+import { Uint256 } from "soltypes";
 
-
-export const useCallMint = (contractAddress: string, tokenURI: string) => {
+export const useCallMint = (contractAddress: string) => {
   const {Moralis, enableWeb3} = useMoralis()
-  const[mintState, setMintState] = useState<{}>({status: "waiting for mint"})
+  const[txID, setTxID] = useState<Uint256 | any>(0)
   const {abi} = Mint_A_Gram;
 
   const handleMint = async () => {
     //let lottery_fee = await (Moralis as any).executeFunction({functionName: "_lottoFee"}
-    setMintState({status: "Minting"})
     const opts:any =  {
-      chain: "0x4",
+      chain: "rinkeby",
       contractAddress: contractAddress,
       functionName: "mintImage",
       abi: abi,
-      params: {tokenURI},
       msgValue: "1"  
     }
 
     const mintImage = await (Moralis as any).executeFunction(opts)
-    .then( (res: { data: any; }) => {
-      console.log("Minting!!!")
+    .then( (data: any) => {
+      setTxID({status: data.events.TransferSingle.returnValues.id})
     }).catch((error: any) => {
       console.log("error ->  ", error)
     });
 
     if(mintImage != null || undefined)
-    setMintState({status: mintImage.status})
+    setTxID({status: mintImage.events.TransferSingle.returnValues.id})
     
   } 
-
-return {handleMint, mintState} 
+console.log(txID)
+return {handleMint, txID} 
 }
