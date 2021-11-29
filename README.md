@@ -8,21 +8,21 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 2. Copy `.env.example` to `.env` and add your keys:
 
 # Your appId
-REACT_APP_MORALIS_APP_ID="wbQvwyeZBH9QqpAGeboRe6kSsm0nSR8pCK8UL7R2"
+REACT_APP_MORALIS_APP_ID="xxx"
 
 #Your serverUrl
-REACT_APP_MORALIS_SERVER_URL="https://emrhkluqpxfy.usemoralis.com:2053/server"
+REACT_APP_MORALIS_SERVER_URL="xxx"
 
 #Moralis API KEY
-REACT_APP_Moralis_API_KEY="pv0p5n9Kr0tsWlGizTZWTfGiU1ubIRYTi96kZJIOM7iXy4Lhi00mnkqvWQWxYhBh"
+REACT_APP_Moralis_API_KEY="xxx"
 
 #Etherscan API KEY
-REACT_APP_ETHERSCAN_TOKEN="HSXVR1B722M57QY78HWVD3XDE383PRJAUJ"
+REACT_APP_ETHERSCAN_TOKEN="xxx"
 
 #Contract address
-REACT_APP_DEPLOYED_CONTRACT="0xB94f2cb04498cB79520De2B7349751e4ACc918AE"
+REACT_APP_DEPLOYED_CONTRACT="xxx"
 #Contract address
-REACT_APP_DEPLOYED_AUCTION="0x9E0F7dF9Cee5C5EdFF28dCBAB838CA50E5476d51"
+REACT_APP_DEPLOYED_AUCTION="xxx"
 
 SKIP_PREFLIGHT_CHECK=true
 
