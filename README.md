@@ -1,5 +1,5 @@
 
-Mintagram is essentially an inverse approach to opensea. The goal is to create a more inward driven user experience then other apps while providing all the same functionality and some. Community governed, censorship resitant environment where users are the only benifactors.  The overall mission is to reduce berrirs, and showcase how a dac can work in a social setting.
+Mintagram is essentially an inverse approach to opensea. The goal is to create a more inward driven user experience then other apps while providing all the same functionality and some. Community governed, censorship resitant environment where users are the only benefactors.  The overall mission is to reduce berrirs, and showcase how a dac can work in a social setting.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -10,7 +10,7 @@ Acquire a Moralis account here -> https://moralis.io/ to obtain API keys to init
 2. Copy `.env.example` to `.env` and add your keys:
 3. Add `SKIP_PREFLIGHT_CHECK=true` to your .env to bypass the 8.1.0 babel-loader warning
 
-# Your appId
+## Your appId
 REACT_APP_MORALIS_APP_ID="xxx"
 
 #Your serverUrl
@@ -31,6 +31,6 @@ SKIP_PREFLIGHT_CHECK=true
 
 4.gulp watch / Start the app with `yarn start` (or `npm run start`)
 
-# Styling
+## Styling
 Run `gulp watch` to init styling
 Run `gulp build --production` to compile styling for production
