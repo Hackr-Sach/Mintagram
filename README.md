@@ -3,9 +3,12 @@ Mintagram is essentially an inverse approach to opensea. The goal is to create a
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Acquire a Moralis account here -> https://moralis.io/ to obtain API keys to init the app
+
 ## Quick start
 1. Install dependencies via `yarn install` (or `npm install`)
 2. Copy `.env.example` to `.env` and add your keys:
+3. Add `SKIP_PREFLIGHT_CHECK=true` to your .env to bypass the 8.1.0 babel-loader warning
 
 # Your appId
 REACT_APP_MORALIS_APP_ID="xxx"
@@ -26,4 +29,8 @@ REACT_APP_DEPLOYED_AUCTION="xxx"
 
 SKIP_PREFLIGHT_CHECK=true
 
-3.gulp watch / Start the app with `yarn start` (or `npm run start`)
+4.gulp watch / Start the app with `yarn start` (or `npm run start`)
+
+# Styling
+Run `gulp watch` to init styling
+Run `gulp build --production` to compile styling for production
