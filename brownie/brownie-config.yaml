@@ -15,7 +15,9 @@ reports:
         - Owned
 
 dev_deployment_artifacts: True
+dotenv: .env
 
+# automatically fetch contract sources from Etherscan
 autofetch_sources: True
 
 networks:

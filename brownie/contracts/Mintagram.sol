@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";  
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol"; // for testings conveniece
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
@@ -17,9 +17,9 @@ contract Mint_A_Gram is
 {
     using Counters for Counters.Counter;
     // Mint factory variables
-    Counters.Counter private x_tokenIds; 
-    mapping(uint256=>string) private x_uris;
-    mapping (address => uint) public x_userMintCount;
+    Counters.Counter private x_tokenIds;
+    mapping(uint256 => string) private x_uris;
+    mapping(address => uint256) public x_userMintCount;
     // Mint Lottery variables
     bytes32 public x_keyHash;
     uint256 public x_chainlinkFee;
@@ -40,7 +40,6 @@ contract Mint_A_Gram is
     event enteredDraw(address indexed player);
     event requestedDrawWinner(bytes32 indexed requestId);
     event winnerChosen(address indexed player);
-    
 
     constructor(
         address _vrfCoordinator,
@@ -49,7 +48,7 @@ contract Mint_A_Gram is
         uint256 _chainlinkFee,
         uint256 _ticketFee,
         uint256 _interval
-    ) public ERC1155("") VRFConsumerBase(_vrfCoordinator, _linkToken) { 
+    ) public ERC1155("") VRFConsumerBase(_vrfCoordinator, _linkToken) {
         x_lastTimeStamp = block.timestamp;
         x_keyHash = _keyHash;
         x_chainlinkFee = _chainlinkFee;
@@ -58,38 +57,40 @@ contract Mint_A_Gram is
         x_theWinner = 0x0000000000000000000000000000000000000000;
         x_lotteryState = lotteryState.OPEN;
     }
-    function uri(uint256 tokenId) override public view returns(string memory){
-        return(x_uris[tokenId]);
+
+    function uri(uint256 tokenId) public view override returns (string memory) {
+        return (x_uris[tokenId]);
     }
-    function setTokenURI(uint256 tokenId, string memory uri) public payable{
-       require(bytes(x_uris[tokenId]).length == 0, "uri can only be set once.");
+
+    function setTokenURI(uint256 tokenId, string memory uri) public payable {
+        require(
+            bytes(x_uris[tokenId]).length == 0,
+            "uri can only be set once."
+        );
         x_uris[tokenId] = uri;
     }
-    // Mint factory 
-    function mintImage()
-        public
-        payable
-        returns (uint256)
-    {
+
+    // Mint factory
+    function mintImage() public payable returns (uint256) {
         x_tokenIds.increment();
         uint256 newItemId = x_tokenIds.current();
         _mint(msg.sender, newItemId, 1, "");
         x_userMintCount[msg.sender] = x_userMintCount[msg.sender] + 1;
-        if(x_userMintCount[msg.sender] % 3 == 0){
-        x_usersEntered.push(payable(msg.sender));
-        emit enteredDraw(msg.sender);
+        if (x_userMintCount[msg.sender] % 3 == 0) {
+            x_usersEntered.push(payable(msg.sender));
+            emit enteredDraw(msg.sender);
         }
         return newItemId;
     }
 
-    function setApprovals(address _operator, bool _approved)public {
+    function setApprovals(address _operator, bool _approved) public {
         this.setApprovalForAll(_operator, _approved);
         emit ApprovalForAll(msg.sender, _operator, _approved);
     }
-  
+
     // Mint Lottery functions START
     // TODO Set a fixed price using chainlink price feeds.
-     function enterLottery() public payable {
+    function enterLottery() public payable {
         //require(msg.value >= x_ticketFee, "Not enough value sent to enter");
         require(x_lotteryState == lotteryState.OPEN, "Lottery is not open");
         x_usersEntered.push(payable(msg.sender));
@@ -97,7 +98,9 @@ contract Mint_A_Gram is
     }
 
     // checkUpkeep Lottery status
-    function checkUpkeep(bytes memory /*checkData*/)
+    function checkUpkeep(
+        bytes memory /*checkData*/
+    )
         public
         view
         override
@@ -110,8 +113,11 @@ contract Mint_A_Gram is
             hasLink);
         performData = bytes("");
     }
+
     // perform upkeep Lottery
-    function performUpkeep(bytes calldata /*performData*/) external override {
+    function performUpkeep(
+        bytes calldata /*performData*/
+    ) external override {
         require(
             LINK.balanceOf(address(this)) >= x_chainlinkFee,
             "Not enough Link"
@@ -124,6 +130,7 @@ contract Mint_A_Gram is
         bytes32 requestId = requestRandomness(x_keyHash, x_chainlinkFee);
         emit requestedDrawWinner(requestId);
     }
+
     // reward random user lottery prize
     function fulfillRandomness(
         bytes32, /*requestId*/
@@ -154,7 +161,7 @@ contract Mint_A_Gram is
         );
     }
 
-    function getNumLotteryEntries() public view returns(uint256){
+    function getNumLotteryEntries() public view returns (uint256) {
         return x_usersEntered.length;
     }
 
@@ -162,13 +169,12 @@ contract Mint_A_Gram is
     // loop over the player array and return a count of a players entries.
     // return the number of entries from player x / y entries.
     // }
-    
+
     // Mint Lottery functions END
 
     // Mint DAC START
 
     // Mint DAC END
- 
+
     receive() external payable {}
 }
-
